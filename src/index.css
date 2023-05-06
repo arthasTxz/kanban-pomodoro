@@ -1,0 +1,35 @@
+body {
+  background: #D9D9D9;
+}
+
+header {
+  background-color: #FDFAFA;
+  color: black;
+  padding: 1rem;
+}
+
+header  h2 {
+  font-size: 3rem;
+  text-align: center;
+  /* color: white; */
+  /* font-family: 'Montserrat', sans-serif; */
+}
+
+.lists-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.task {
+  width: 200px;
+  color:black;
+  background-color: #FDFAFA;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  font-size:large;
+}
+
+.task:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
