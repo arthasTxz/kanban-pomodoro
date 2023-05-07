@@ -33,7 +33,9 @@ export default function DashBoard(){
         //         const activeIndex = list.tasks.indexOf(active.id)
         //         const overIndex = list.tasks.indexOf(over.id)
                 
-        //         return({...list, tasks: arrayMove(list.tasks, activeIndex, overIndex)})
+        //         return {
+        //             ...list, 
+        //             tasks: }
         //     })
         // }
     }
@@ -52,8 +54,11 @@ export default function DashBoard(){
             <DndContext 
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}>
-                
+                <SortableContext
+                items={list}
+                strategy={verticalListSortingStrategy}>
                     {listOfList}
+                </SortableContext>
             </DndContext>
             <ToggableList
             onFormSubmit={handleFormSubmit} />
