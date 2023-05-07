@@ -3,7 +3,9 @@ import ListTask from './ListTask'
 import ToggableList from './ToggableList'
 import { useState
  } from "react";
- import { DndContext } from "@dnd-kit/core";
+ import { DndContext, closestCenter } from "@dnd-kit/core";
+ import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+ import { useDroppable } from "@dnd-kit/core";
 
 export default function DashBoard(){
 
@@ -21,6 +23,20 @@ export default function DashBoard(){
         setList((oldList)=>[...oldList, {nameList: name, tasks:[]}])
     }
 
+    function handleDragEnd(event){
+        const {active, over} = event
+        console.log("ACTIVE : " + active.id)
+        console.log("OVER :" + over.id)
+            
+        // if(active.id !== over.id){
+        //     setList( (list)=> {
+        //         const activeIndex = list.tasks.indexOf(active.id)
+        //         const overIndex = list.tasks.indexOf(over.id)
+                
+        //         return({...list, tasks: arrayMove(list.tasks, activeIndex, overIndex)})
+        //     })
+        // }
+    }
    
     //  console.log(promps.listOfListTask[1].tasks)
     const listOfList = list.map( (list)=> {
@@ -33,8 +49,11 @@ export default function DashBoard(){
 
     return(
         <div className="lists-container">
-            <DndContext>
-                {listOfList}
+            <DndContext 
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}>
+                
+                    {listOfList}
             </DndContext>
             <ToggableList
             onFormSubmit={handleFormSubmit} />
