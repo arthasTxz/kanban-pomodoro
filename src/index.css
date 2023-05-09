@@ -33,3 +33,7 @@ header  h2 {
 .task:hover {
   box-shadow: 0 0 11px rgba(33,33,33,.2); 
 }
+
+/* .list-task {
+  width: 200px;
+} */

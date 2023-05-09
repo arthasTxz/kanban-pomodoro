@@ -13,7 +13,6 @@ export default function ListTask(props){
             id: props.nameList
         })
     
-    console.log(list)
 
     // function handleFormSubmit(name){
     //     setList((oldList)=>[...oldList, name])
@@ -28,7 +27,7 @@ export default function ListTask(props){
     })
 
     return(
-        <div ref={setNodeRef} key={props.key}>
+        <div ref={setNodeRef} className="list-task">
             <h6>{props.nameList}</h6>
             <SortableContext
                 items={list}

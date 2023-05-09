@@ -8,9 +8,9 @@ import { useState, useEffect
     KeyboardSensor,
     PointerSensor,
     useSensor,
-    useSensors, } from "@dnd-kit/core";
- import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
- 
+    useSensors,
+    closestCorners } from "@dnd-kit/core";
+ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy} from "@dnd-kit/sortable";
 
 export default function DashBoard(){
 
@@ -53,8 +53,8 @@ export default function DashBoard(){
             
         if(active.id !== over.id && activeIndex === overIndex){
             setList((oldList)=> {
-                // let arrayTask = [...oldList]
-                let arrayTask = JSON.parse(JSON.stringify(oldList))
+                let arrayTask = [...oldList]
+                // let arrayTask = JSON.parse(JSON.stringify(oldList))
                 let container = arrayTask[activeIndex]
                 const taskDrag = container.tasks.indexOf(active.id)
                 const taskDrop = container.tasks.indexOf(over.id)
@@ -85,32 +85,103 @@ export default function DashBoard(){
         }
         return [name, index]
     }
-
-    // function moveBetweenContainers(items, activeContainer, activeIndex, ){}
    
-    //  console.log(promps.listOfListTask[1].tasks)
-    const listOfList = list.map( (list, index)=> {
-        return(
-        <ListTask 
-        nameList={list.nameList}
-        listTask={list.tasks}
-        key={index}/>)
-    })
 
     //dragOver Controla el cambio en containers distintos
     function handleDragOver(event){
         const {active, over} = event
+        const [activeContainer, activeIndex ]= findContainer(active.id, list)
+        const [overContainer, overIndex ]= findContainer(over.id, list)
 
+        if (
+            !activeContainer ||
+            !overContainer ||
+            activeContainer === overContainer
+          ) {
+            return;
+          }
+
+        if(activeIndex !== overIndex){
+            setList((oldList)=> {
+                //quizas deberia trabajar sobre esta lista copiada y no sobre la original
+                let arrayTask = [...oldList]
+                
+                let dragContainer = arrayTask[activeIndex]
+                let dropContainer = arrayTask[overIndex]
+                
+                const taskDrag = dragContainer.tasks.indexOf(active.id)
+                const taskDrop = dropContainer.tasks.indexOf(over.id)
+                let dragContainerTask = dragContainer.tasks
+                let dropContainerTask = dropContainer.tasks
+                // console.log(taskDrag)
+                // console.log(taskDrop)
+                if(active.id === over.id){
+                    dragContainer = {...dragContainer, tasks: removeAtIndex(dragContainerTask, taskDrop)}
+                    dropContainer = {...dropContainer, tasks: insertAtIndex(dragContainerTask,0,element)}
+                }
+                else{
+                    let element = dragContainerTask[taskDrag]
+                    dragContainerTask.splice(taskDrag,1)
+                    // console.log(dragContainer)
+                    dropContainerTask.splice(taskDrop, 0, element)
+                    // console.log(dropContainerTask)
+                    dragContainer = {...dragContainer, tasks: dragContainerTask}
+                    dropContainer = {...dropContainer, tasks: dropContainerTask}
+                }
+                
+                // console.log(dragContainer)
+                // console.log(dropContainer)
+                arrayTask[activeIndex] = dragContainer
+                arrayTask[overIndex] = dropContainer
+                console.log(arrayTask)
+                return arrayTask
+            })
+        }
         
     }
+
+    // setList(oldList => {
+    //     let arrayTask = [...oldList]
+    //     let dragContainer = arrayTask[activeIndex]
+    //     let dropContainer = arrayTask[overIndex]
+    //     const taskDrag = dragContainer.tasks.indexOf(active.id)
+    //     const taskDrop = dropContainer.tasks.indexOf(over.id)
+    //     let dragContainerTask = dragContainer.tasks
+    //     let dropContainerTask = dropContainer.tasks
+    //     const element = dragContainerTask[taskDrag]
+        
+    //     arrayTask[activeIndex] = dragContainer
+    //     arrayTask[overIndex] = dropContainer
+    //     console.log(arrayTask)
+    //     return arrayTask
+    // })
+
+    const removeAtIndex = (array, index) => {
+        return [...array.slice(0, index), ...array.slice(index + 1)];
+      };
+      
+    const insertAtIndex = (array, index, item) => {
+        return [...array.slice(0, index), item, ...array.slice(index)];
+      };
+
+    const listOfList = list.map( (list)=> {
+        return(
+        <ListTask 
+        nameList={list.nameList}
+        listTask={list.tasks}
+        />)
+    })
     
 
     return(
         <div className="lists-container">
             <DndContext 
+            
             sensors={sensors}
-            collisionDetection={closestCenter}
+            collisionDetection={closestCorners}
             onDragEnd={handleDragEnd}
+            onDragOver={handleDragOver}
+            
            >
                 <SortableContext
                 items={list}
