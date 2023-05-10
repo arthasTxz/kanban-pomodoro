@@ -37,3 +37,41 @@ header  h2 {
 /* .list-task {
   width: 200px;
 } */
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  color:black;
+  background-color: #FDFAFA;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  font-size:large;
+}
+
+.task-form > input {
+  margin-bottom: 5px
+}
+
+.task-form > button {
+  width: 100px;
+  background-color: rgb(22, 125, 165);
+  color: white
+}
+
+.toggable-list {
+  margin-top: 22px;
+  margin-left: 25px;
+}
+
+.submit {
+  background-color: rgb(22, 125, 165);
+  color: white
+}
+
+.cancel {
+  background-color: rgb(174, 12, 12);
+  color: white;
+  margin-left: 5px;
+}

@@ -5,8 +5,8 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-ki
 import { useDroppable } from "@dnd-kit/core";
 
 export default function ListTask(props){
-    // const list = props.listTask
-    // const [list, setList] = useState(props.listTask)
+    const [indice, setIndex] = useState(props.index)
+    console.log("el indice es " + indice)
     const list = props.listTask
 
     const {setNodeRef} = useDroppable({
@@ -14,14 +14,15 @@ export default function ListTask(props){
         })
     
 
-    // function handleFormSubmit(name){
-    //     setList((oldList)=>[...oldList, name])
-    // }
+    function handleFormSubmit(name, index){
+        props.onFormSubmit(name, index)
+    }
 
     const listTask = list.map( (task) => {
         return(
         <Task 
         name={task}
+        index={indice}
         />
         )
     })
@@ -35,6 +36,8 @@ export default function ListTask(props){
                 {listTask}
             </SortableContext>
             <Toggable 
+            onFormSubmit={handleFormSubmit}
+            index={indice}
             />
         </div>
     )

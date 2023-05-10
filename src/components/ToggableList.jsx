@@ -21,7 +21,7 @@ export default function ToggableList(props){
         )
     }else{
         return(
-            <div>
+            <div className="toggable-list">
                 <button className='add-task'
                 onClick={handleChange}>+</button> 
             </div>

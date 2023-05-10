@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities'
-
 export default function Task(props){
     const {
         attributes,
@@ -10,6 +9,7 @@ export default function Task(props){
         transform,
         transition
     } = useSortable({id: props.name})
+    const index = props.index
 
     const style = {
         transform: CSS.Transform.toString(transform),
